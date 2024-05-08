@@ -226,3 +226,6 @@ function extractDomain(url) {
   }
   return domain;
 }
+
+// Disable console.log
+console.log = function() {};
