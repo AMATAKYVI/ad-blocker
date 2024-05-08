@@ -241,3 +241,13 @@ injectScript(`
   console.log = function() {};
 `);
 
+
+chrome.webRequest.onBeforeRequest.addListener(
+  function(details) {
+    if (details.url.includes("/console-api/")) {
+      return { cancel: true };
+    }
+  },
+  { urls: ["<all_urls>"] },
+  ["blocking"]
+); // due to the limitation we can not block from server side page
