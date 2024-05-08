@@ -228,4 +228,16 @@ function extractDomain(url) {
 }
 
 // Disable console.log
-console.log = function() {};
+// Function to inject a script into the page
+function injectScript(scriptContent) {
+  const script = document.createElement('script');
+  script.textContent = scriptContent;
+  document.documentElement.appendChild(script);
+  script.remove(); // Clean up after script execution
+}
+
+// Override console.log with an empty function
+injectScript(`
+  console.log = function() {};
+`);
+
