@@ -156,6 +156,52 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
   });
 });
 
+
+chrome.webRequest.onBeforeRequest.addListener(
+  function(details) {
+    // Check if the request is for an HTML page
+    if (details.type === "main_frame" && details.url.startsWith("http")) {
+      // Fetch the HTML content of the page
+      fetch(details.url)
+        .then(response => response.text())
+        .then(html => {
+          // Create a DOM element from the fetched HTML
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+
+          // Remove the specific <a> tag
+          const specificLink = doc.querySelector('a.poster.tooltipstered');
+          if (specificLink) {
+            specificLink.remove();
+            console.log("Removed specific link.");
+          }
+
+          // Serialize the modified HTML back to string
+          const modifiedHtml = new XMLSerializer().serializeToString(doc);
+
+          // Return the modified HTML as a response to the request
+          return { redirectUrl: "data:text/html;base64," + btoa(modifiedHtml) };
+        })
+        .catch(error => {
+          console.error("Error fetching or modifying HTML:", error);
+        });
+    }
+  },
+  { urls: ["<all_urls>"] },
+  ["blocking"]
+);
+document.addEventListener("DOMContentLoaded", function() {
+  // Find all <a> tags with the class "poster" and "tooltipstered"
+  var specificLinks = document.querySelectorAll('a.poster.tooltipstered');
+  // Loop through each specific link and add a click event listener
+  specificLinks.forEach(function(link) {
+    link.addEventListener("click", function(event) {
+      event.preventDefault();
+      console.log("Link click intercepted, redirect prevented.");
+    });
+  });
+});
+
 // Function to remove the specific <a> tag
 function removeSpecificLink() {
   var specificLink = document.querySelector('a.poster.tooltipstered');
