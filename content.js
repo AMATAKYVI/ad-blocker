@@ -224,4 +224,5 @@ function injectScript(scriptContent) {
       element.style.setProperty('before', 'none');
     }
   });
+
   
