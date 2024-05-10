@@ -152,9 +152,10 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
       // Listen for clicks on the document
       document.addEventListener("click", handleRedirects);
     `,
-    runAt: "document_start"
+    runAt: "document_idle" // Change this line
   });
 });
+
 
 
 chrome.webRequest.onBeforeRequest.addListener(
@@ -256,6 +257,16 @@ chrome.webRequest.onBeforeRedirect.addListener(
   ["blocking"]
 );
 
+chrome.webRequest.onBeforeRequest.addListener(
+  function(details) {
+      if (details.type === 'main_frame' && details.url.startsWith('http') || !details.url.startsWith('https://asianc.to')|| !details.url.startsWith('https://animesuge.to')) {
+          // Block the request if it's an HTTP redirect
+          return {cancel: true};
+      }
+  },
+  {urls: ['<all_urls>']},
+  ['blocking']
+);
 
 // Function to extract domain from URL
 function extractDomain(url) {
@@ -275,3 +286,12 @@ function extractDomain(url) {
   return domain;
 }
 
+// Block all
+chrome.webRequest.onBeforeRequest.addListener(
+  function(details) {
+      console.log("I am going to block:", details.url)
+      return {cancel: true}
+  },
+  {urls: blocked_sites_v2},
+  ["blocking"]
+)

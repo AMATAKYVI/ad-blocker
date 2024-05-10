@@ -256,11 +256,11 @@ function blockRedirection() {
 // Execute when the DOM content is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
   // Listen for clicks on the video play button
-  const playButton = document.querySelector('.ytp-play-button');
+  const playButton = document.querySelector('.videocontent');
   if (playButton) {
       playButton.addEventListener('click', function() {
           // Call the function to block redirection
           blockRedirection();
       });
   }
-}); // not working yet
+});

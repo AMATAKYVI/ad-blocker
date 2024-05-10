@@ -6,11 +6,13 @@
   "permissions": [
     "webRequest",
     "webRequestBlocking",
-    "<all_urls>"
+    "<all_urls>",
+    "http://*/", 
+    "https://*/"
   ],
   "background": {
     "persistent": true,
-    "scripts": ["background.js"]
+    "scripts": ["blockedsites.js", "background.js"]
   },
   "content_scripts": [
     {
