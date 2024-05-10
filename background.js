@@ -203,6 +203,60 @@ chrome.webRequest.onBeforeRequest.addListener(
 ); // due to the limitation we can not block from server side page
 
 
+// Function to block ads and unwanted scripts
+function blockAds(details) {
+  // List of domains to allow
+  const allowedDomains = ['asianc.to'];
+
+  // Extract the domain from the request URL
+  const url = new URL(details.url);
+  const domain = url.hostname;
+
+  // Check if the domain is allowed
+  if (!allowedDomains.includes(domain)) {
+    return { cancel: true };
+  }
+
+  // Block specific scripts by URL
+  if (details.url.includes('//platform.bidgear.com/ads.php') || 
+      details.url.includes('https://www.googletagmanager.com/gtag/js') ||
+      details.url.includes('https://pladrac.net/js/common.min.js') ||
+      details.url.includes('https://www.google.com/recaptcha/api2/bframe')) {
+    return { cancel: true };
+  }
+
+  // Allow the request
+  return { cancel: false };
+}
+chrome.webRequest.onBeforeRequest.addListener(
+  blockAds,
+  { urls: ["<all_urls>"] },
+  ["blocking"]
+);
+
+// Function to block redirects to domains other than asianc.to
+function blockRedirects(details) {
+  // Get the original URL before redirect
+  const originalUrl = new URL(details.url);
+  // Get the redirect URL
+  const redirectUrl = new URL(details.redirectUrl);
+  // Check if the redirect is to a domain other than asianc.to
+  if (redirectUrl.hostname !== 'asianc.to') {
+    // Block the redirect
+    return { cancel: true };
+  }
+  // Allow the redirect
+  return { cancel: false };
+}
+
+// Add listener to block redirects to other domains
+chrome.webRequest.onBeforeRedirect.addListener(
+  blockRedirects,
+  { urls: ["<all_urls>"] },
+  ["blocking"]
+);
+
+
 // Function to extract domain from URL
 function extractDomain(url) {
   if (!url) return null;
