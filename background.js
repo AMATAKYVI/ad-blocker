@@ -4,8 +4,8 @@ chrome.runtime.onInstalled.addListener(function() {
 
 chrome.webRequest.onBeforeRequest.addListener(
   function(details) {
-    if (!details || !details.url) {
-      console.log("Error: Invalid request details");
+        if (!details || !details.url) {
+      // console.log("Error: Invalid request details");
       return;
     }
 
@@ -31,7 +31,6 @@ chrome.webRequest.onBeforeRequest.addListener(
 chrome.webRequest.onBeforeRequest.addListener(
   function(details) {
     if (!details || !details.type || !details.documentUrl) {
-      console.log("Error: Invalid request details");
       return;
     }
 
@@ -57,7 +56,6 @@ chrome.webRequest.onBeforeRequest.addListener(
 chrome.webRequest.onBeforeRequest.addListener(
   function(details) {
     if (!details || !details.type || !details.documentUrl) {
-      console.log("Error: Invalid request details");
       return;
     }
 
@@ -87,7 +85,6 @@ chrome.webRequest.onBeforeRequest.addListener(
 chrome.webRequest.onBeforeRequest.addListener(
   function(details) {
     if (!details || !details.type || !details.url) {
-      console.log("Error: Invalid request details");
       return;
     }
 
@@ -289,6 +286,7 @@ function extractDomain(url) {
 // Block all
 chrome.webRequest.onBeforeRequest.addListener(
   function(details) {
+   
       console.log("I am going to block:", details.url)
       return {cancel: true}
   },
