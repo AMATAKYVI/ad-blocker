@@ -225,4 +225,42 @@ function injectScript(scriptContent) {
     }
   });
 
-  
+  // Function to block redirection to domains other than "asianc.to"
+function blockRedirection() {
+  // Find all hidden elements that could potentially redirect
+  const hiddenElements = document.querySelectorAll('*[style*="display: none"]');
+
+  // Check each hidden element
+  hiddenElements.forEach(element => {
+      // Check if the element has an onclick attribute
+      const onclick = element.getAttribute('onclick');
+      if (onclick && onclick.includes('window.location.href')) {
+          // Extract the URL from the onclick attribute
+          const url = onclick.match(/window\.location\.href\s*=\s*["']([^"']+)["']/);
+          if (url && url.length > 1) {
+              const redirectUrl = url[1];
+              // Check if the redirect URL is not from "asianc.to"
+              if (!redirectUrl.includes('asianc.to')) {
+                  // Block the redirection by preventing the default action
+                  element.addEventListener('click', function(event) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      console.log('Blocked redirection to:', redirectUrl);
+                  });
+              }
+          }
+      }
+  });
+}
+
+// Execute when the DOM content is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Listen for clicks on the video play button
+  const playButton = document.querySelector('.ytp-play-button');
+  if (playButton) {
+      playButton.addEventListener('click', function() {
+          // Call the function to block redirection
+          blockRedirection();
+      });
+  }
+}); // not working yet
