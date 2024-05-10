@@ -1,6 +1,6 @@
-// chrome.runtime.onInstalled.addListener(function() {
-//   console.log("Redirect Blocker installed.");
-// });
+chrome.runtime.onInstalled.addListener(function() {
+  console.log("Redirect Blocker installed.");
+});
 
 chrome.webRequest.onBeforeRequest.addListener(
   function(details) {
@@ -24,7 +24,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       }
     });
   },
-  {urls: blocked_sites_v2},
+  {urls: ["<all_urls>"]},
   ["blocking"]
 );
 
@@ -50,7 +50,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       });
     }
   },
-  {urls: blocked_sites_v2},
+  {urls: ["<all_urls>"]},
   ["blocking"]
 );
 
@@ -80,7 +80,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       });
     }
   },
-  {urls: blocked_sites_v2},
+  {urls: ["<all_urls>"]},
   ["blocking"]
 );
 
@@ -109,7 +109,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       });
     }
   },
-  {urls: blocked_sites_v2},
+  {urls: ["<all_urls>"]},
   ["blocking"]
 );
 // Listen for clicks
@@ -188,7 +188,7 @@ chrome.webRequest.onBeforeRequest.addListener(
         });
     }
   },
-  { urls: blocked_sites_v2 },
+  { urls: ["<all_urls>"] },
   ["blocking"]
 );
 
@@ -199,7 +199,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       return { cancel: true };
     }
   },
-  { urls: blocked_sites_v2 },
+  { urls: ["<all_urls>"] },
   ["blocking"]
 ); // due to the limitation we can not block from server side page
 
@@ -231,7 +231,7 @@ function blockAds(details) {
 }
 chrome.webRequest.onBeforeRequest.addListener(
   blockAds,
-  { urls: blocked_sites_v2 },
+  { urls: ["<all_urls>"] },
   ["blocking"]
 );
 
@@ -253,7 +253,7 @@ function blockRedirects(details) {
 // Add listener to block redirects to other domains
 chrome.webRequest.onBeforeRedirect.addListener(
   blockRedirects,
-  { urls: blocked_sites_v2 },
+  { urls: ["<all_urls>"] },
   ["blocking"]
 );
 
