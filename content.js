@@ -184,12 +184,12 @@ function injectScript(scriptContent) {
     });
   });
   
-  document.addEventListener("DOMContentLoaded", function() {
+ document.addEventListener("DOMContentLoaded", function() {
     var scripts = document.querySelectorAll('script[src="https://pladrac.net/js/common.min.js?v=11.0.1"]');
   scripts.forEach(function(script) {
     script.remove();
     console.log("Removed script from pladrac.net");
-  });
+});
   
   
   // Call the function when the DOM content is loaded
