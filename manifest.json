@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Redirect Blocker",
   "version": "1.0",
-  "description": "Blocks unwanted redirects",
+  "description": "Blocks unwanted redirects, especially those from ad sites.",
   "action":{
     "default_popup": "popup.html"
   },
