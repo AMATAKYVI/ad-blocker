@@ -1,15 +1,23 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Redirect Blocker",
   "version": "1.0",
-  "description": "Blocks unwanted redirects, especially those from ad sites.",
-  "action":{
-    "default_popup": "popup.html"
+  "description": "Blocks unwanted redirects",
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>",
+    "http://*/", 
+    "https://*/"
+  ],
+  "background": {
+    "persistent": true,
+    "scripts": ["blockedsites.js", "background.js"]
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js", "blockedsites.js", "background.js"]
+      "js": ["content.js"]
     }
   ]
 }
