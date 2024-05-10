@@ -190,69 +190,17 @@ chrome.webRequest.onBeforeRequest.addListener(
   { urls: ["<all_urls>"] },
   ["blocking"]
 );
-document.addEventListener("DOMContentLoaded", function() {
-  // Find all <a> tags with the class "poster" and "tooltipstered"
-  var specificLinks = document.querySelectorAll('a.poster.tooltipstered');
-  // Loop through each specific link and add a click event listener
-  specificLinks.forEach(function(link) {
-    link.addEventListener("click", function(event) {
-      event.preventDefault();
-      console.log("Link click intercepted, redirect prevented.");
-    });
-  });
-});
 
-// Function to remove the specific <a> tag
-function removeSpecificLink() {
-  var specificLink = document.querySelector('a.poster.tooltipstered');
-  if (specificLink) {
-    specificLink.remove();
-    console.log("Removed specific link.");
-  }
-}
 
-// Mutation observer to continuously monitor changes in the DOM
-var observer = new MutationObserver(function(mutationsList, observer) {
-  for(var mutation of mutationsList) {
-    if (mutation.type === 'childList') {
-      removeSpecificLink();
+chrome.webRequest.onBeforeRequest.addListener(
+  function(details) {
+    if (details.url.includes("/console-api/")) {
+      return { cancel: true };
     }
-  }
-});
-
-// Start observing the document body for changes
-observer.observe(document.body, { childList: true, subtree: true });
-
-// Initial removal of the specific link
-removeSpecificLink();
-
-
-// Function to remove the specific <section> element
-function removeSpecificSection() {
-  var specificSection = document.querySelector('section.adx');
-  if (specificSection) {
-    specificSection.remove();
-    console.log("Removed specific section.");
-  }
-}
-
-// Mutation observer to continuously monitor changes in the DOM
-var observer = new MutationObserver(function(mutationsList, observer) {
-  for(var mutation of mutationsList) {
-    if (mutation.type === 'childList') {
-      removeSpecificSection();
-    }
-  }
-});
-
-// Start observing the document body for changes
-observer.observe(document.body, { childList: true, subtree: true });
-
-// Initial removal of the specific section
-removeSpecificSection();
-
-
-
+  },
+  { urls: ["<all_urls>"] },
+  ["blocking"]
+); // due to the limitation we can not block from server side page
 
 
 // Function to extract domain from URL
@@ -273,27 +221,3 @@ function extractDomain(url) {
   return domain;
 }
 
-// Disable console.log
-// Function to inject a script into the page
-function injectScript(scriptContent) {
-  const script = document.createElement('script');
-  script.textContent = scriptContent;
-  document.documentElement.appendChild(script);
-  script.remove(); // Clean up after script execution
-}
-
-// Override console.log with an empty function
-injectScript(`
-  console.log = function() {};
-`);
-
-
-chrome.webRequest.onBeforeRequest.addListener(
-  function(details) {
-    if (details.url.includes("/console-api/")) {
-      return { cancel: true };
-    }
-  },
-  { urls: ["<all_urls>"] },
-  ["blocking"]
-); // due to the limitation we can not block from server side page
