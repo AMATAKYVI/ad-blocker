@@ -2,8 +2,6 @@
 
 Load the pack to your chrome://extensions
 
-Can not block the redirect if the handling is on server side.
+Can barely block the redirect if the handling of the web page is on server side (trying to look for a way).
 
-Mostly work on the client side.
-
-Since some side using interval time set up.
+Client Side Handling
