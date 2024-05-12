@@ -4,11 +4,11 @@
   "version": "1.0",
   "description": "Blocks unwanted redirects",
   "permissions": [
+    "<all_urls>",
     "webRequest",
     "webRequestBlocking",
-    "<all_urls>",
-    "http://*/", 
-    "https://*/"
+    "https://*/*",
+    "http://*/*"
   ],
   "background": {
     "persistent": true,
@@ -19,5 +19,8 @@
       "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
-  ]
+  ],
+  "browser_action": {
+    "default_popup": "popup.html"
+  }
 }
